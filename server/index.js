@@ -1,4 +1,4 @@
-// server.js
+
 const express = require('express');
 const app = express();
 const cors = require('cors');
@@ -19,15 +19,14 @@ app.use(bodyParser.json());
 app.post('/send-sms', (req, res) => {
   const { message, to } = req.body;
   
-  // Ensure 'to' starts with +91 for Indian numbers
-  const formattedTo = to.startsWith('+') ? to : `+${to}`; // Simple handling, assumes international numbers  c
+ 
+  const formattedTo = to.startsWith('+') ? to : `+${to}`; 
 
    console.log({message, formattedTo})
   client.messages
     .create({
       body: message,
-      from: process.env.TWILIO_NUMBER, // Twilio phone number in E.164 format
-      to: formattedTo, // Recipient's phone number in E.164 format (including +91)
+      from: process.env.TWILIO_NUMBER, 
     })
     .then((message) => res.json({ success: true, sid: message.sid }))
     .catch((error) => res.status(500).json({ success: false, error }));
